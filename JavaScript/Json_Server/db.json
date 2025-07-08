@@ -1,0 +1,19 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "name": "Lộ trình học Front-end",
+      "description": "Lập trình viên Front-end là người xây dựng ra giao diện websites. Trong phần này F8 sẽ chia sẻ cho bạn lộ trình để trở thành lập trình viên Front-end nhé."
+    },
+    {
+      "id": "3",
+      "name": "Làm việc với Terminal & Ubuntu",
+      "description": "Sở hữu một Terminal hiện đại, mạnh mẽ trong tùy biến và học cách làm việc với Ubuntu là một bước quan trọng trên con đường trở thành một Web Developer."
+    },
+    {
+      "id": "4",
+      "name": "Lộ trình học Back-end",
+      "description": "Trái với Front-end thì lập trình viên Back-end là người làm việc với dữ liệu, công việc thường nặng tính logic hơn. Chúng ta sẽ cùng tìm hiểu thêm về lộ trình học Back-end nhé."
+    }
+  ]
+}
