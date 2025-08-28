@@ -1,4 +1,4 @@
-package Thread.C1Inheritance;
+package thread.c1Inheritance;
 
 public class Main {
     public static void main(String[] args) {

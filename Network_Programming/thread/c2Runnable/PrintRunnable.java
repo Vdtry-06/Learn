@@ -1,4 +1,4 @@
-package Thread.C2Runnable;
+package thread.c2Runnable;
 
 public class PrintRunnable implements Runnable {
     private String name;

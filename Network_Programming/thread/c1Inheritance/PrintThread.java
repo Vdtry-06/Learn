@@ -1,4 +1,4 @@
-package Thread.C1Inheritance;
+package thread.c1Inheritance;
 
 public class PrintThread extends Thread {
     private String name;
