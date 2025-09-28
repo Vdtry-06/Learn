@@ -1,4 +1,4 @@
-package ptit.udp.gcPgTn1W;
+package ptit.udp.data_type.gcPgTn1W;
 
 import java.io.IOException;
 import java.net.*;
