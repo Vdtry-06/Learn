@@ -1,4 +1,6 @@
-package UDP;
+package UDP.G8U6mIlV;
+
+import UDP.Product;
 
 import java.io.*;
 import java.net.*;
