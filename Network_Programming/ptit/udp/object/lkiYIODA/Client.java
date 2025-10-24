@@ -16,8 +16,9 @@ public class Client {
         DatagramSocket socket = new DatagramSocket();
         InetAddress address = InetAddress.getByName(SERVER_HOST);
 
-        String clientMessage = ";B22DCCN866;lkiYIODA";
-        byte[] outBuffer = clientMessage.getBytes();
+        String message = ";B22DCCN866;RRjU42ge";
+
+        byte[] outBuffer = message.getBytes();
         DatagramPacket outPacket = new DatagramPacket(outBuffer, outBuffer.length, address, SERVER_PORT);
         socket.send(outPacket);
 
@@ -27,28 +28,8 @@ public class Client {
 
         String requestId = new String(inPacket.getData(), 0, 8);
         ByteArrayInputStream bis = new ByteArrayInputStream(inPacket.getData(), 8, inPacket.getLength() - 8);
-        ObjectInputStream ois = new ObjectInputStream(bis);
+        Employee employee = (Employee) new ObjectInputStream(bis).readObject();
 
-        Employee employee = (Employee) ois.readObject();
-        employee.setName(employee.getName());
-        employee.setSalary(employee.getSalary());
-        employee.setHireDate(employee.getHireDate());
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(employee);
-        oos.flush();
-
-        byte[] requestIdBytes = requestId.getBytes();
-        byte[] objectBytes = bos.toByteArray();
-        outBuffer = new byte[requestIdBytes.length + objectBytes.length];
-
-        for (int i = 0; i < 8; i++) outBuffer[i] = requestIdBytes[i];
-        for (int i = 0; i < objectBytes.length; i++) outBuffer[8 + i] = objectBytes[i];
-
-        outPacket = new DatagramPacket(outBuffer, outBuffer.length, address, SERVER_PORT);
-        socket.send(outPacket);
-
-        socket.close();
+        employee.updateName();
     }
 }

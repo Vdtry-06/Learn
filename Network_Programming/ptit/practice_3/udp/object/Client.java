@@ -1,4 +1,4 @@
-package UDP.lkiYIODA;
+package ptit.practice_3.udp.object;
 
 import UDP.Employee;
 
@@ -30,5 +30,23 @@ public class Client {
         Employee employee = (Employee) new ObjectInputStream(bis).readObject();
 
         employee.updateName();
+        employee.updateSalary();
+        employee.updateHireDate();
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(employee);
+        oos.flush();
+
+        byte[] requestIdBytes = requestId.getBytes();
+        byte[] objectBytes = bos.toByteArray();
+        outBuffer = new byte[requestIdBytes.length + objectBytes.length];
+        System.arraycopy(requestIdBytes, 0, outBuffer, 0, 8);
+        System.arraycopy(objectBytes, 0, outBuffer, 8, objectBytes.length);
+
+        outPacket = new DatagramPacket(outBuffer, outBuffer.length, address, SERVER_PORT);
+        socket.send(outPacket);
+
+        socket.isClosed();
     }
 }

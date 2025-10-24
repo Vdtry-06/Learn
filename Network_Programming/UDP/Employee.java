@@ -18,26 +18,17 @@ public class Employee implements Serializable {
         this.hireDate = hireDate;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        String[] parts = name.split(" ");
+    public void updateName() {
+        String[] parts = name.toLowerCase().split(" ");
         String newName = "";
         for (String s : parts) {
-            newName += s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase() + " ";
+            newName += s.substring(0, 1).toUpperCase() + s.substring(1) + " ";
         }
         newName = newName.substring(0, newName.length() - 1);
         this.name = newName;
-        System.out.println(newName);
     }
 
-    public double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(double salary) {
+    public void updateSalary() {
         String year = hireDate.substring(0, 4);
         int x = 0;
         for (int i = 0; i < year.length(); i++) {
@@ -45,19 +36,12 @@ public class Employee implements Serializable {
         }
         salary = Double.parseDouble(String.format("%.2f", salary * (1 + (double) x / 100)));
         this.salary = salary;
-        System.out.println(salary);
     }
-
-    public String getHireDate() {
-        return hireDate;
-    }
-
-    public void setHireDate(String hireDate) {
+    public void updateHireDate() {
         DateTimeFormatter in = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter out = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate date = LocalDate.parse(hireDate, in);
         String formatDate = date.format(out);
         this.hireDate = formatDate;
-        System.out.println(formatDate);
     }
 }
