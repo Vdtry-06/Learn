@@ -1,5 +1,4 @@
 package ptit.practice_3.rmi.object;
-import RMI.DataService;
 import RMI.ObjectService;
 import RMI.ProductX;
 
