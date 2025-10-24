@@ -148,3 +148,96 @@ ObjectService service = (ObjectService) registry.lookup("RMIObjectService");
 ProductX productX = (ProductX) service.requestObject(username, qCode);
 service.submitObject(username, qCode, <Object Name>);
 ```
+
+## IV. Note
+### 1. StringBuilder
+```
+- sb.append(s);
+- sb.insert(index, value);
+- sb.delete(start, end);
+```
+
+### 2. Regex
+```
+// loại bỏ kí tự đặc biệt chỉ gồm số và chữ hoa thường
+- s.split("[^A-Za-z0-9]+");
+
+// loại bỏ được " " và xuống dòng
+- \s+ coi cả 3 dấu này là 1 dấu phân cách.
+```
+
+### 3. OOP:
+```
+- bài nào tạo 1 class con phải có implements Serializable để chuyển object sang byte
+- nếu có so sánh thì implements Comparable<Tên class con đó> và trong phải:
+
+- Ghi đè:
+    @Override
+    public int compareTo(Tên_class o) {//process;}
+    
+- Main Class khi gọi lớp con có thể triển khai như sau:
+    ArrayList<Tên_class_con> list = new ArrayList<>();
+    list.add(new Tên_class_con(method của class con));
+    Collections.sort(myList);                            // tăng dần
+    Collections.sort(myList, Collections.reverseOrder()); // giảm dần
+```
+
+### 4. Chuẩn hóa tên:
+```
+String[] parts = s.trim().split("\\s+");
+StringBuilder sb = new StringBuilder();
+for (String part : parts) {
+    String lower = part.toLowerCase();
+    String capitalized = lower.substring(0, 1).toUpperCase() + lower.substring(1);
+    sb.append(capitalized).append(" ");
+}
+String res = sb.substring(0, sb.length() - 1);
+```
+
+### 5. Chuẩn hóa ngày tháng năm:
+```
+-C1: SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    s = sdf.format(sdf.parse(s));
+    
+-C2:DateTimeFormatter in = DateTimeFormatter.ofPattern("d/M/yyyy");
+    DateTimeFormatter out = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate dateTime = LocalDate.parse(s, in);
+    String formatted = dateTime.format(out);
+    System.out.println(formatted);
+
+```
+```
+- Chuẩn hóa thời gian:
+    String s = "3/6/2003 1:2PM" || "1:2";
+    DateTimeFormatter in = DateTimeFormatter.ofPattern("d/M/yyyy h:ma" | H:m);
+    DateTimeFormatter out = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    LocalDateTime dateTime = LocalDateTime.parse(s, in);
+    String formatted = dateTime.format(out);
+```
+```
+- Đếm số ngày:
+    LocalDate | LocalDatetime dateTimes // tùy theo có thời gian hay không có thời gian
+    long between = ChronoUnit.DAYS.between(dateTimes, dateTimee);
+```
+### 6. Map:
+```
+- hm.put(key, value)
+- for (Map.Entry<String, Integer> m : hm.entrySet()) {
+    sout(m.getKey() + ":");
+    sout(m.getValue());
+  }
+  map.get(key);
+  map.remove(key);
+  map.clear();
+  map.size();
+  map.keySet();
+  map.values();
+```
+
+### 7. Set:
+```
+- set.add(value);
+- set.contains(value);
+- set.remove(value);
+- set.clear(); 
+```
