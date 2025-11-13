@@ -1,4 +1,4 @@
-package com.example.demo.configs;
+package com.example.demo.configs.language_context;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
