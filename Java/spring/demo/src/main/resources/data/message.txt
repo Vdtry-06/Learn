@@ -1,0 +1,2 @@
+Hello everyone !
+I am testing message for Resource loading!
