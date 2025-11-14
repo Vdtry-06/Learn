@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.services.application_events_context.UserService;
 import com.example.demo.services.language_context.Language;
 import com.example.demo.services.resource_loading_context.ResourceLoadService;
+import com.example.demo.services.scheduling_async_context.TaskService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -25,9 +26,17 @@ public class DemoApplication {
         // đọc nội dung file
         ResourceLoadService resourceLoadService = context.getBean(ResourceLoadService.class);
         try {
-            resourceLoadService.readFile("data/test.json");
+            resourceLoadService.readFile("data/message.txt");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        // schedule và async
+        TaskService taskService = context.getBean(TaskService.class);
+        // schedule: tự động chạy theo thời gian
+        // async: gọi mới chạy
+        taskService.asyncProcess();
+        // version 2
+        // call api http://localhost:8080/run-multiple : run multiple task
     }
 }
