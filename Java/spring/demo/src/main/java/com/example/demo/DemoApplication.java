@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.services.application_events_context.UserService;
+import com.example.demo.services.parser_standard_method_expression.ExpressionParserService;
 import com.example.demo.services.language_context.Language;
 import com.example.demo.services.resource_loading_context.ResourceLoadService;
 import com.example.demo.services.scheduling_async_context.TaskService;
@@ -33,10 +34,15 @@ public class DemoApplication {
 
         // schedule và async
         TaskService taskService = context.getBean(TaskService.class);
-        // schedule: tự động chạy theo thời gian
-        // async: gọi mới chạy
+        // schedule: tự động chạy theo thời gian, async: gọi mới chạy
         taskService.asyncProcess();
         // version 2
         // call api http://localhost:8080/run-multiple : run multiple task
+
+        // spring expression
+        ExpressionParserService expressionParserService = context.getBean(ExpressionParserService.class);
+        expressionParserService.calculatorByExpressionParser();
+        expressionParserService.calculatorByStandardEvaluationContext();
+        expressionParserService.callMethod();
     }
 }
