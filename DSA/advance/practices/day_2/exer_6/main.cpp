@@ -15,7 +15,8 @@ void solve() {
     } 
 
     while(!q.empty()) {
-        cout << q.front() << " ";
+        cout << q.front();
+        if (q.size() > 1) cout << " ";
         q.pop();
     }
     
