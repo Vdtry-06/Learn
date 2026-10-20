@@ -4,23 +4,31 @@ using ll = long long;
 #define file() freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
 #define faster() ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 const int MAX = 10005;
-queue<int> q;
+stack<int> st;
+string x = "([{";
+string y = ")]}";
 
 void solve() {
-    int n; cin >> n;
-    for (int i = 1; i <= n; i++) q.push(i);
-    while (q.size() >= 2) {
-        cout << q.front() << " "; q.pop();
-        q.push(q.front()); q.pop();
-    } 
-
-    while(!q.empty()) {
-        cout << q.front();
-        if (q.size() > 1) cout << " ";
-        q.pop();
+    string s; cin >> s;
+    bool check = true;
+    for (int i = 0; i < s.length(); i++) {
+        for (int j = 0; j < x.length(); j++) {
+            if (s[i] == x[j]) st.push(j);
+        }
+        for (int j = 0; j < y.length(); j++) {
+            if (s[i] != y[j]) continue;
+            if (st.empty() || st.top() != j) {
+                check = false;
+                break;
+            }
+            st.pop();
+        }
     }
-    
+    if (!st.empty()) check = false;
+    if (check == true) cout << "YES";
+    else cout << "NO";
     cout << endl;
+    while(!st.empty()) st.pop();
 }
 
 int main() {
