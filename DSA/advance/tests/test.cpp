@@ -7,19 +7,32 @@ const int MAX = 10005;
 queue<int> q;
 
 void solve() {
-    int n; cin >> n;
-    for (int i = 1; i <= n; i++) q.push(i);
-    while (q.size() >= 2) {
-        cout << q.front() << " "; q.pop();
-        q.push(q.front()); q.pop();
-    } 
-
-    while(!q.empty()) {
-        cout << q.front() << " ";
-        q.pop();
+    int n;
+    cin >> n;
+    vector<string> ans;
+    while(n > 0) {
+        string s; cin >> s;
+        if (s == "ENQUEUE") {
+            int x; cin >> x;
+            q.push(x);
+        } else if (s == "DEQUEUE") {
+            if (!q.empty()) q.pop();
+        } else {
+            if (!q.empty()) {
+                ans.push_back(to_string(q.front()));
+            } else {
+                ans.push_back("EMPTY");
+            }
+        }
+        n--;
     }
-    
+    for (int i = 0; i < ans.size(); i++) {
+        cout << ans[i];
+        if (i != ans.size() - 1) cout << " ";
+    }
     cout << endl;
+    while(!q.empty()) q.pop();
+    for (int i = 0; i < ans.size(); i++) ans[i].clear();
 }
 
 int main() {
