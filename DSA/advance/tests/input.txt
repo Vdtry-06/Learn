@@ -1,7 +1,14 @@
-6
-()
-())()
-([])
-([)]
-((()))
-(()
+2
+7
+PUSH 10
+PUSH 20
+TOP
+POP
+TOP
+POP
+TOP
+4
+PUSH 5
+PUSH 8
+POP
+TOP
