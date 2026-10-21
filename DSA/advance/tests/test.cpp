@@ -4,51 +4,50 @@ using ll = long long;
 #define file() freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
 #define faster() ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 const int MAX = 1005;
-int a[MAX];
+int a[1005][1005];
+int dx[] = {-1, 0, 0, 1};
+int dy[] = {0, -1, 1, 0};
+int used[1005][1005];
+int n, m;
 
-void add_x(int x, int a[], int n) {
-    a[n] = x;
-}
+int d = 0;
 
-void first_add(int x, int a[], int n) {
-    for (int i = n; i >= 1; i--) a[i] = a[i - 1];
-    a[0] = x;
-}
-
-void remove_x(int x, int a[], int n) {
-    int idx = -1;
-    for (int i = 0; i < n; i++) {
-        if (a[i] == x) {
-            idx = i;
-            break;
+bool check(int i, int j) {
+    for (int mask = 0; mask < 16; mask++) {
+        ll sum = 0;
+        int tmp = mask;
+        for (int k = 0; k < 4; k++) {
+            int x = i + dx[k];
+            int y = j + dy[k];
+            
+            if (x < 0 || x >= n || y < 0 || y >= m) continue;
+            
+            if (tmp % 2 == 1) sum += a[x][y];
+            else sum -= a[x][y];
+            tmp /= 2;
         }
+        if (sum == a[i][j]) return true;
     }
-    for (int i = idx; i < n; i++) a[i] = a[i + 1];
+    return false;
 }
 
 void solve() {
-    int n, m; cin >> n >> m;
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < m; i++) {
-        string s; cin >> s;
-        int x; cin >> x;
-        if (s == "ADD") {
-            add_x(x, a, n);
-            n++;
-        } else if (s == "FIRST") {
-            n++;
-            first_add(x, a, n);
-        } else {
-            remove_x(x, a, n);
-            n--;
+    cin >> n >> m;
+    d = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cin >> a[i][j];
+            used[i][j] = 0;
         }
     }
-    if (n == 0) cout << "EMPTY";
-    else for (int i = 0; i < n; i++) {
-        cout << a[i];
-        if (i != n - 1) cout << " ";
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (check(i, j)) d++;
+        }
     }
-    cout << endl;
+
+    cout << d << endl;
 }
 
 int main() {
