@@ -7,7 +7,6 @@ const int MAX = 1005;
 int a[1005][1005];
 int dx[] = {-1, 0, 0, 1};
 int dy[] = {0, -1, 1, 0};
-int used[1005][1005];
 int n, m;
 
 int d = 0;
@@ -35,10 +34,7 @@ void solve() {
     cin >> n >> m;
     d = 0;
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            cin >> a[i][j];
-            used[i][j] = 0;
-        }
+        for (int j = 0; j < m; j++) cin >> a[i][j];
     }
 
     for (int i = 0; i < n; i++) {
