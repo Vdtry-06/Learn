@@ -20,60 +20,59 @@ bool used[MAX][MAX][2];
 queue<State> q;
 
 void BFS(int i, int j) {
+    int st = (a[i][j] == 'a');
 
-    int startKey = (a[i][j] == 'a');
-    
-    q.push({i, j, startKey});
-    dis[i][j][startKey] = 0;
-    used[i][j][startKey] = true;
+    // cap nhat trang thai
+    q.push({i, j, st});
+    used[i][j][st] = true;
+    dis[i][j][st] = 0;
 
-    int ex = -1, ey = -1, ekey = -1;
+    int ex = -1, ey = -1, eKey = -1;
 
     while (!q.empty()) {
         State cur = q.front(); q.pop();
-
         int x = cur.x;
         int y = cur.y;
         int hasKey = cur.hasKey;
 
+        // 1. ket thuc
         if (a[x][y] == 'O') {
             ex = x;
             ey = y;
-            ekey = hasKey;
+            eKey = hasKey;
             break;
         }
 
+        // thu lua chon
         for (int k = 0; k < 4; k++) {
             int nx = x + dx[k];
             int ny = y + dy[k];
-            
+
+            // lua chon ko hop le
             if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
-
             if (a[nx][ny] == 'X') continue;
-
             if (a[nx][ny] == 'A' && hasKey == 0) continue;
 
-            int nextKey = hasKey;
-
-            if (a[nx][ny] == 'a') nextKey = 1;
+            int nextKey = hasKey; 
 
             if (used[nx][ny][nextKey]) continue;
 
-            used[nx][ny][nextKey] = true;
+            if (a[nx][ny] == 'a') nextKey = 1;
+            
+            // chon
             dis[nx][ny][nextKey] = dis[x][y][hasKey] + 1;
+            used[nx][ny][nextKey] = true;
             q.push({nx, ny, nextKey});
         }
     }
-    if (ex == -1) cout << -1 << endl;
-    else cout << dis[ex][ey][ekey] << endl;
+    if (eKey == -1) cout << -1 << endl;
+    else cout << dis[ex][ey][eKey] << endl;
 }
-
 
 void solve() {
     cin >> n >> m;
     int r, c; cin >> r >> c;
-    r--;
-    c--;
+    r--; c--;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             cin >> a[i][j];
