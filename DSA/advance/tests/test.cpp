@@ -5,53 +5,62 @@ using ll = long long;
 #define faster() ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 const ll INF = 1e18;
 const int MAX = 105;
+int dx[] = {1, 0, -1, 0};
+int dy[] = {0, -1, 0, 1};
+char dz[] ={'D', 'L', 'U', 'R'};
 bool used[MAX][MAX];
 int a[MAX][MAX];
-
-int dx[8] = {2, 1, -1, -2, -2, -1, 1, 2};
-int dy[8] = {1, 2, 2, 1, -1, -2, -2, -1};
 int n;
+vector<string> res;
 
-bool backtrack(int i, int j, int st) {
-    // trang thai buoc
-    a[i][j] = st;
+void backtrack(int i, int j, string s) {
     used[i][j] = true;
-    
-    // dk hoan thanh
-    if (st == n * n - 1) {
-        return true;
+
+    // 1. ktra hoan thanh
+    if (i == n - 1 && j == n - 1) {
+        res.push_back(s);
+        used[i][j] = false;
+        return;
     }
 
-    // thu 8 lan di
-    for (int k = 0; k < 8; k++) {
+    // thu tung doan chon
+    for (int k = 0; k < 4; k++) {
         int x = i + dx[k];
         int y = j + dy[k];
-        
-        // lua chon ko hop le
-        if (x < 0 || x >= n || y < 0 || y >= n || used[x][y] == true) continue;
+        char z = dz[k];
 
-        // neu tim dc kq 
-        if (backtrack(x, y, st + 1)) return true;
+        if (x < 0 || x >= n || y < 0 || y >= n || a[x][y] == 0) continue;
+        
+        if (used[x][y]) continue;
+
+        backtrack(x, y, s + dz[k]);
     }
 
-    // bo chon
     used[i][j] = false;
-    a[i][j] = -1;
-    return false;
 }
 
 void solve () {
     cin >> n;
-    memset(used, false, sizeof(used));
-    for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) a[i][j] = -1;
-    if (backtrack(0, 0, 0)) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) cout << a[i][j] << " ";
-            cout << endl;
-        }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) cin >> a[i][j];
     }
-}
 
+    memset(used, false, sizeof(used));
+
+    string s;
+
+    backtrack(0, 0, s);
+
+    sort(res.begin(), res.end());
+
+    for (string x : res) {
+        cout << x << endl;
+    }
+
+    cout << endl;
+
+    res.clear();
+}
 
 int main() {
     file();
