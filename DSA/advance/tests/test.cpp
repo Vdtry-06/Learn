@@ -4,41 +4,52 @@ using ll = long long;
 #define file() freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
 #define faster() ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 const ll INF = 1e18;
-const int MAX = 1005;
+const int MAX = 105;
+bool used[MAX][MAX];
+int a[MAX][MAX];
 
-void backtrack(int idx, string &s, vector<string> &res) {
+int dx[8] = {2, 1, -1, -2, -2, -1, 1, 2};
+int dy[8] = {1, 2, 2, 1, -1, -2, -2, -1};
+int n;
 
-    // 1. kiem tra hoan thanh
-    if (idx == s.length()) {
-        res.push_back(s);
-        return;
+bool backtrack(int i, int j, int st) {
+    // trang thai buoc
+    a[i][j] = st;
+    used[i][j] = true;
+    
+    // dk hoan thanh
+    if (st == n * n - 1) {
+        return true;
     }
 
-    // 3. thu tung doan
-    for (int i = idx; i < s.length(); i++) {
+    // thu 8 lan di
+    for (int k = 0; k < 8; k++) {
+        int x = i + dx[k];
+        int y = j + dy[k];
+        
+        // lua chon ko hop le
+        if (x < 0 || x >= n || y < 0 || y >= n || used[x][y] == true) continue;
 
-        // 4. Chon
-        swap(s[idx], s[i]);
-
-        // trang thai moi
-        backtrack(idx + 1, s, res);
-
-        // 5. Bo chon
-        swap(s[idx], s[i]);
+        // neu tim dc kq 
+        if (backtrack(x, y, st + 1)) return true;
     }
+
+    // bo chon
+    used[i][j] = false;
+    a[i][j] = -1;
+    return false;
 }
 
-
 void solve () {
-    string s;
-    cin >> s;
-
-    vector<string> res;
-    backtrack(0, s, res);
-    sort(res.begin(), res.end());
-
-    for (string x : res) cout << x << " ";
-    cout << endl;
+    cin >> n;
+    memset(used, false, sizeof(used));
+    for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) a[i][j] = -1;
+    if (backtrack(0, 0, 0)) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) cout << a[i][j] << " ";
+            cout << endl;
+        }
+    }
 }
 
 
