@@ -5,62 +5,64 @@ using ll = long long;
 #define faster() ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 const ll INF = 1e18;
 const int MAX = 105;
-int dx[] = {1, 0, -1, 0};
-int dy[] = {0, -1, 0, 1};
-char dz[] ={'D', 'L', 'U', 'R'};
-bool used[MAX][MAX];
-int a[MAX][MAX];
 int n;
-vector<string> res;
+vector<vector<int>> res;
+bool col[MAX];
+bool dia1[2 * MAX];
+bool dia2[2 * MAX];
 
-void backtrack(int i, int j, string s) {
-    used[i][j] = true;
+bool check(int i, int j) {
+    return !col[j] && !dia1[i - j + n - 1] && !dia2[i + j];
+}
 
-    // 1. ktra hoan thanh
-    if (i == n - 1 && j == n - 1) {
-        res.push_back(s);
-        used[i][j] = false;
+void backtrack(int i, int j, vector<int> &ans) {
+    // Đánh dấu vị trí quân hậu
+    col[j] = dia1[i - j + n - 1] = dia2[i + j] = true;
+
+    ans.push_back(j);
+
+    // ket thuc
+    if (ans.size() == n) {
+        res.push_back(ans);
+        ans.pop_back();
+
+        col[j] = dia1[i - j + n - 1] = dia2[i + j] = false;
+
         return;
     }
 
-    // thu tung doan chon
-    for (int k = 0; k < 4; k++) {
-        int x = i + dx[k];
-        int y = j + dy[k];
-        char z = dz[k];
+    // thu lua chon
+    for (int col = 0; col < n; col++) {
+        if (!check(i + 1, col)) continue;
 
-        if (x < 0 || x >= n || y < 0 || y >= n || a[x][y] == 0) continue;
-        
-        if (used[x][y]) continue;
-
-        backtrack(x, y, s + dz[k]);
+        backtrack(i + 1, col, ans);
     }
 
-    used[i][j] = false;
+    ans.pop_back();
+    col[j] = dia1[i - j + n - 1] = dia2[i + j] = false;
 }
 
 void solve () {
     cin >> n;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) cin >> a[i][j];
-    }
+    
+    memset(col, false, sizeof(col));
+    memset(dia1, false, sizeof(dia1));
+    memset(dia2, false, sizeof(dia2));
 
-    memset(used, false, sizeof(used));
+    vector<int> ans;
+    
+    for (int j = 0; j < n; j++) backtrack(0, j, ans);
 
-    string s;
-
-    backtrack(0, 0, s);
-
-    sort(res.begin(), res.end());
-
-    for (string x : res) {
-        cout << x << endl;
+    for (vector<int> x : res) {
+        for (int val : x) cout << val + 1 << " ";
+        cout << endl;
     }
 
     cout << endl;
 
     res.clear();
 }
+
 
 int main() {
     file();
