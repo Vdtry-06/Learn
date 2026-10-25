@@ -1,64 +1,45 @@
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
-
 #define file() freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
 #define faster() ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
+const int INF = 1e9;
+const int MAX = 205;
+int a[MAX];
+int n, s;
+int dp[MAX][100005];
 
-const ll INF = LLONG_MAX / 4;
-const int MAX = 105;
+bool backtrack(int idx, int sum) {
+    // 2. hoan thanh
+    if (sum == 0) return true;
 
-int t[MAX], f[MAX];
-int n, st;
-ll mi;
-ll best[MAX][MAX];
+    // cat nhanh
+    if (idx < 0 || sum < 0) return false; 
 
-void backtrack(int pre, int dur, ll s) {
-    // Cat nhanh
-    if (s >= mi) return;
+    // neu trang thai da dc tinh
+    if (dp[idx][sum] != -1) return dp[idx][sum];
 
-    // Hoan thanh
-    if (pre == n) {
-        mi = s;
-        return;
+    // 3. chon
+    if (sum >= a[idx]) {
+        if (backtrack(idx - 1, sum - a[idx])) return dp[idx][sum] = 1;
     }
 
-    // Cat trang thai da co thoi gian tot hon
-    if (best[pre][dur] <= s) return;
-    best[pre][dur] = s;
+    // 4. ko chon
+    if (backtrack(idx - 1, sum)) return dp[idx][sum] = 1;
 
-    int next = pre + 1;
-
-    // Chon 
-    backtrack(next, f[next], s + t[next]);
-
-    // Khong chon
-    if (dur > 1) {
-        backtrack(next, dur - 1, s);
-    }
+    // 5. that bai
+    return dp[idx][sum] = 0;
 }
 
-void solve() {
-    cin >> n >> st;
-    f[0] = st;
-    t[0] = 0;
+void solve () {
+    cin >> n >> s;
+    for (int i = 0; i < n; i++) cin >> a[i];
+    memset(dp, -1, sizeof(dp));
+    
+    sort(a, a + n);
 
-    for (int i = 1; i <= n; i++) {
-        cin >> f[i] >> t[i];
-    }
-
-    mi = INF;
-
-    for (int i = 0; i < MAX; i++) {
-        for (int j = 0; j < MAX; j++) {
-            best[i][j] = INF;
-        }
-    }
-
-    backtrack(0, st, 0);
-
-    if (mi == INF) cout << -1;
-    else cout << mi;
+    if (backtrack(n - 1, s)) cout << 1;
+    else cout << 0;
     cout << endl;
 }
 
