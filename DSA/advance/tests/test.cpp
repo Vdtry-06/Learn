@@ -1,73 +1,72 @@
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
+
 #define file() freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
 #define faster() ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
-const ll INF = 1e18;
+
+const ll INF = LLONG_MAX / 4;
 const int MAX = 105;
-int n;
-vector<vector<int>> res;
-bool col[MAX];
-bool dia1[2 * MAX];
-bool dia2[2 * MAX];
 
-bool check(int i, int j) {
-    return !col[j] && !dia1[i - j + n - 1] && !dia2[i + j];
-}
+int t[MAX], f[MAX];
+int n, st;
+ll mi;
+ll best[MAX][MAX];
 
-void backtrack(int i, int j, vector<int> &ans) {
-    // Đánh dấu vị trí quân hậu
-    col[j] = dia1[i - j + n - 1] = dia2[i + j] = true;
+void backtrack(int pre, int dur, ll s) {
+    // Cat nhanh
+    if (s >= mi) return;
 
-    ans.push_back(j);
-
-    // ket thuc
-    if (ans.size() == n) {
-        res.push_back(ans);
-        ans.pop_back();
-
-        col[j] = dia1[i - j + n - 1] = dia2[i + j] = false;
-
+    // Hoan thanh
+    if (pre == n) {
+        mi = s;
         return;
     }
 
-    // thu lua chon
-    for (int col = 0; col < n; col++) {
-        if (!check(i + 1, col)) continue;
+    // Cat trang thai da co thoi gian tot hon
+    if (best[pre][dur] <= s) return;
+    best[pre][dur] = s;
 
-        backtrack(i + 1, col, ans);
+    int next = pre + 1;
+
+    // Chon 
+    backtrack(next, f[next], s + t[next]);
+
+    // Khong chon
+    if (dur > 1) {
+        backtrack(next, dur - 1, s);
     }
-
-    ans.pop_back();
-    col[j] = dia1[i - j + n - 1] = dia2[i + j] = false;
 }
 
-void solve () {
-    cin >> n;
-    
-    memset(col, false, sizeof(col));
-    memset(dia1, false, sizeof(dia1));
-    memset(dia2, false, sizeof(dia2));
+void solve() {
+    cin >> n >> st;
+    f[0] = st;
+    t[0] = 0;
 
-    vector<int> ans;
-    
-    for (int j = 0; j < n; j++) backtrack(0, j, ans);
-
-    for (vector<int> x : res) {
-        for (int val : x) cout << val + 1 << " ";
-        cout << endl;
+    for (int i = 1; i <= n; i++) {
+        cin >> f[i] >> t[i];
     }
 
+    mi = INF;
+
+    for (int i = 0; i < MAX; i++) {
+        for (int j = 0; j < MAX; j++) {
+            best[i][j] = INF;
+        }
+    }
+
+    backtrack(0, st, 0);
+
+    if (mi == INF) cout << -1;
+    else cout << mi;
     cout << endl;
-
-    res.clear();
 }
-
 
 int main() {
     file();
     faster();
-    int tc; cin >> tc;
+    int tc;
+    cin >> tc;
     for (int i = 1; i <= tc; i++) {
         cout << "#" << i << " ";
         solve();
