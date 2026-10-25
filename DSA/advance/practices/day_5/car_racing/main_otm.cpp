@@ -1,17 +1,14 @@
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
-
 #define file() freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
 #define faster() ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
-
-const ll INF = LLONG_MAX / 4;
+const ll INF = 1e9;
 const int MAX = 105;
-
 int t[MAX], f[MAX];
 int n, st;
 ll mi;
-ll best[MAX][MAX];
+ll used[MAX][MAX];
 
 void backtrack(int pre, int dur, ll s) {
     // Cat nhanh
@@ -24,8 +21,8 @@ void backtrack(int pre, int dur, ll s) {
     }
 
     // Cat trang thai da co thoi gian tot hon
-    if (best[pre][dur] <= s) return;
-    best[pre][dur] = s;
+    if (used[pre][dur] <= s) return;
+    used[pre][dur] = s;
 
     int next = pre + 1;
 
@@ -33,26 +30,18 @@ void backtrack(int pre, int dur, ll s) {
     backtrack(next, f[next], s + t[next]);
 
     // Khong chon
-    if (dur > 1) {
-        backtrack(next, dur - 1, s);
-    }
+    if (dur > 1) backtrack(next, dur - 1, s);
 }
 
 void solve() {
     cin >> n >> st;
-    f[0] = st;
-    t[0] = 0;
-
-    for (int i = 1; i <= n; i++) {
-        cin >> f[i] >> t[i];
-    }
-
+    f[0] = st; t[0] = 0;
     mi = INF;
 
+    for (int i = 1; i <= n; i++) cin >> f[i] >> t[i];
+
     for (int i = 0; i < MAX; i++) {
-        for (int j = 0; j < MAX; j++) {
-            best[i][j] = INF;
-        }
+        for (int j = 0; j < MAX; j++) used[i][j] = INF;
     }
 
     backtrack(0, st, 0);
