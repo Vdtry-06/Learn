@@ -3,44 +3,50 @@ using namespace std;
 using ll = long long;
 #define file() freopen("input.txt", "r", stdin); freopen("output.txt", "w", stdout);
 #define faster() ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
-const int INF = 1e9;
-const int MAX = 205;
-int a[MAX];
-int n, s;
-int dp[MAX][100005];
+const ll INF = 1e9;
+const int MAX = 105;
+int a[MAX][MAX];
+bool picked[MAX];
+int n, m;
+int res = 0;
 
-bool backtrack(int idx, int sum) {
-    // 2. hoan thanh
-    if (sum == 0) return true;
-
-    // cat nhanh
-    if (idx < 0 || sum < 0) return false; 
-
-    // neu trang thai da dc tinh
-    if (dp[idx][sum] != -1) return dp[idx][sum];
-
-    // 3. chon
-    if (sum >= a[idx]) {
-        if (backtrack(idx - 1, sum - a[idx])) return dp[idx][sum] = 1;
+void backtrack(int i, int s) {
+    // 1. hoan thanh
+    if (i >= n) {
+        res = max(res, s);
+        return;
     }
 
-    // 4. ko chon
-    if (backtrack(idx - 1, sum)) return dp[idx][sum] = 1;
+    // 2. thu chon
+    for (int j = 0; j < m; j++) {
+        // 2.1. loai dk ko tm
+        if (picked[j]) continue;
 
-    // 5. that bai
-    return dp[idx][sum] = 0;
+        // 2.2. danh dau da chon
+        picked[j] = true;
+        // cout << a[i][j] << " ";
+
+        // 2.3. chon
+        backtrack(i + 1, s + a[i][j]);
+
+        // 2.4. bo chon
+        picked[j] = false;
+    }
 }
 
-void solve () {
-    cin >> n >> s;
-    for (int i = 0; i < n; i++) cin >> a[i];
-    memset(dp, -1, sizeof(dp));
-    
-    sort(a, a + n);
+void solve() {
+    cin >> n >> m;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) cin >> a[i][j];
+    }
 
-    if (backtrack(n - 1, s)) cout << 1;
-    else cout << 0;
-    cout << endl;
+    memset(picked, false, sizeof(picked));
+    res = 0;
+   
+    backtrack(0, 0);
+
+    cout << res << endl;
+
 }
 
 int main() {
